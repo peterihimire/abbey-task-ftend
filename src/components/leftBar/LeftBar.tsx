@@ -1,5 +1,5 @@
-// import React from "react";
-
+import React, { useEffect, useState } from "react";
+import { RootState } from "../../redux/store";
 import "./leftBar.scss";
 import Friends from "../../assets/1.png";
 import Groups from "../../assets/2.png";
@@ -14,19 +14,80 @@ import Messages from "../../assets/10.png";
 import Tutorials from "../../assets/11.png";
 import Courses from "../../assets/12.png";
 import Fund from "../../assets/13.png";
-import { AuthContext } from "../../context/authContext";
-import { useContext } from "react";
+
+import { useAppDispatch, useAppSelector } from "../../hooks/useTypedSelector";
+import { getUserInfo } from "../../redux/features/users/userSlice";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const LeftBar: React.FC = () => {
-  const { currentUser } = useContext(AuthContext);
+  // const { currentUser } = useContext(AuthContext);
+  const dispatch = useAppDispatch();
+  // Fetch user info when component mounts
+  const [logging, setLogging] = useState(false);
+  const [error, setError] = useState("");
+
+  const fetchUserInfo = async () => {
+    try {
+      const response = await dispatch(getUserInfo());
+      console.log("This is user return value", response);
+      if (response.payload.status === "success") {
+        toast.success(`${response.payload.msg}`, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+
+        setLogging(false);
+        // setTimeout(() => {
+        //   // navigate("/");
+        // }, 3000);
+      } else {
+        toast.error(response.payload.msg, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+        setLogging(false);
+      }
+    } catch (err: any) {
+      console.log("Will this error log...", err);
+      setLogging(false);
+      setError(err.data.errors);
+      console.error("Failed to fetch user info: ", error);
+    } finally {
+      setLogging(false);
+    }
+  };
+  useEffect(() => {
+    fetchUserInfo();
+  }, [dispatch]);
+
+  // Get current user from Redux store
+  const currentUser = useAppSelector((state: RootState) => state.user);
+
+  console.log("Yeah, current whatttt USER", currentUser);
+
+  // if (!currentUser) {
+  //   return null; // Optionally, you can show a loading spinner here
+  // }
 
   return (
     <div className="leftBar">
       <div className="container">
         <div className="menu">
           <div className="user">
-            <img src={currentUser.profilePic} alt="" />
-            <span>{currentUser.name}</span>
+            {/* <img src={currentUser.profilePic} alt="" />
+            <span>{currentUser.name}</span> */}
           </div>
           <div className="item">
             <img src={Friends} alt="" />
@@ -90,6 +151,7 @@ const LeftBar: React.FC = () => {
           </div>
         </div>
       </div>
+      <ToastContainer />
     </div>
   );
 };

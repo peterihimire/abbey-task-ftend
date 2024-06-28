@@ -24,7 +24,7 @@ const userData: UserData | null = userDataString
 // import Post from "../../models/postModel";
 
 export const registerUser = createAsyncThunk(
-  "user/register",
+  "auth/register",
   async (payload: UserRegPayloadProps, thunkApi) => {
     console.log("my reg payload: ", payload);
     try {
@@ -40,7 +40,7 @@ export const registerUser = createAsyncThunk(
 );
 
 export const loginUser = createAsyncThunk(
-  "user/login",
+  "auth/login",
   async (payload: UserPayloadProps, thunkApi) => {
     console.log("My login payload: ", payload);
     try {
@@ -56,41 +56,10 @@ export const loginUser = createAsyncThunk(
   }
 );
 
-export const getUserInfo = createAsyncThunk(
-  "user/user_info",
-  async (_, thunkApi) => {
-    try {
-      const response = await userAPI.getUserInfo();
-      const data = response.data;
 
-      console.log("THis is response.data..", data);
-
-      const abbeyData = JSON.parse(
-        localStorage.getItem("abbeytask_user") || "{}"
-      );
-      console.log("This is abbeyData", abbeyData);
-
-      const { followers, following, fullname, friends, friendOf, acctId } =
-        response.data.data;
-
-      const newAbbeyData = {
-        ...abbeyData,
-        ...{ followers, following, fullname, friendOf, friends, acctId },
-      };
-      console.log(newAbbeyData);
-
-      localStorage.setItem("abbeytask_user", JSON.stringify(newAbbeyData));
-
-      return data;
-    } catch (error: any) {
-      const message = error.message;
-      return thunkApi.rejectWithValue(message);
-    }
-  }
-);
 
 export const logoutUser = createAsyncThunk(
-  "user/logout",
+  "auth/logout",
   async (payload, thunkApi) => {
     try {
       const response = await userAPI.logoutUser();
@@ -122,7 +91,7 @@ const initialState = {
   authenticated: !!userData,
 } as UserState;
 
-const userSlice = createSlice({
+const authSlice = createSlice({
   name: "user",
   initialState,
   reducers: {},
@@ -153,19 +122,8 @@ const userSlice = createSlice({
         state.error = action.payload;
       })
 
-      .addCase(getUserInfo.pending, (state, action) => {
-        state.loading = true;
-      })
-      .addCase(getUserInfo.fulfilled, (state, action) => {
-        state.loading = false;
-        state.data = action.payload;
-        // state.authenticated = true;
-      })
-      .addCase(getUserInfo.rejected, (state, action: PayloadAction<any>) => {
-        state.loading = false;
-        state.error = action.payload;
-      });
+    
   },
 });
 
-export default userSlice.reducer;
+export default authSlice.reducer;

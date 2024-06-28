@@ -8,7 +8,7 @@ import { useLocation, Link, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useAppDispatch } from "../../hooks/useTypedSelector";
-import { loginUser } from "../../redux/features/users/userSlice";
+import { loginUser } from "../../redux/features/auth/authSlice";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
