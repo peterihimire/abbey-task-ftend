@@ -14,13 +14,43 @@ import Home from "./pages/home/Home";
 import Profile from "./pages/profile/Profile";
 import "./style.scss";
 import { useContext } from "react";
-import { DarkModeContext } from "./context/darkModeContext";
+
+import { Provider } from "react-redux";
+import store from "./redux/store";
+// import initStore from "./redux/store";
+import CookieConsent from "react-cookie-consent";
+
+// import { useContext } from "react";
+import {
+  DarkModeContext,
+  DarkModeContextProps,
+} from "./context/darkModeContext";
+
+// import { AuthContext, AuthContextProps } from "./context/authContext";
+// import { DarkModeContext } from "./context/darkModeContext";
 // import { AuthContext } from "./context/authContext";
 
-function App() {
+const App: React.FC = (): JSX.Element => {
   // const {currentUser} = useContext(AuthContext);
 
-  const { darkMode } = useContext(DarkModeContext);
+  // const { darkMode } = useContext(DarkModeContext);
+
+  const darkModeContext = useContext<DarkModeContextProps | undefined>(
+    DarkModeContext
+  );
+  // const authContext = useContext<AuthContextProps | undefined>(AuthContext);
+
+  if (!darkModeContext) {
+    throw new Error(
+      "DarkModeContext must be used within a DarkModeContextProvider"
+    );
+  }
+
+  // if (!authContext) {
+  //   throw new Error("AuthContext must be used within an AuthContextProvider");
+  // }
+
+  const { darkMode } = darkModeContext;
 
   const Layout = () => {
     return (
@@ -50,7 +80,7 @@ function App() {
       path: "/",
       element: (
         // <ProtectedRoute>
-          <Layout />
+        <Layout />
         // </ProtectedRoute>
       ),
       children: [
@@ -75,10 +105,20 @@ function App() {
   ]);
 
   return (
-    <div>
+    <Provider store={store}>
       <RouterProvider router={router} />
-    </div>
+      <CookieConsent
+        location="bottom"
+        buttonText="Accept Cookie"
+        cookieName="abbey-social"
+        style={{ background: "#2B373B" }}
+        buttonStyle={{ color: "#4e503b", fontSize: "13px" }}
+        expires={150}
+      >
+        This website uses cookies to enhance the user experience.{" "}
+      </CookieConsent>
+    </Provider>
   );
-}
+};
 
 export default App;

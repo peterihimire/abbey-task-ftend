@@ -14,14 +14,30 @@ import { DarkModeContext } from "../../context/darkModeContext";
 import { AuthContext } from "../../context/authContext";
 
 const Navbar: React.FC = () => {
-  const { toggle, darkMode } = useContext(DarkModeContext);
-  const { currentUser } = useContext(AuthContext);
+  // const { toggle, darkMode } = useContext(DarkModeContext);
+  // const { currentUser } = useContext(AuthContext);
+
+  const darkModeContext = useContext(DarkModeContext);
+  const authContext = useContext(AuthContext);
+
+  if (!darkModeContext) {
+    throw new Error(
+      "DarkModeContext must be used within a DarkModeContextProvider"
+    );
+  }
+
+  if (!authContext) {
+    throw new Error("AuthContext must be used within an AuthContextProvider");
+  }
+
+  const { toggle, darkMode } = darkModeContext;
+  const { currentUser } = authContext;
 
   return (
     <div className="navbar">
       <div className="left">
         <Link to="/" style={{ textDecoration: "none" }}>
-          <span>lamasocial</span>
+          <span>abbey</span>
         </Link>
         <HomeOutlinedIcon />
         {darkMode ? (
