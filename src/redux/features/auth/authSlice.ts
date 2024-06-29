@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import userAPI from "../../api/user";
+import { getUserInfo } from "../users/userSlice"; // Import getUserInfo action
 
 import {
   UserPayloadProps,
@@ -47,6 +48,7 @@ export const loginUser = createAsyncThunk(
       const response = await userAPI.loginUser(payload);
       const data = response.data;
       localStorage.setItem("abbeytask_user", JSON.stringify(data.data));
+      await thunkApi.dispatch(getUserInfo()); // Dispatch getUserInfo here
       return data;
     } catch (error: any) {
       console.log("Error yeah: ", error.response);
@@ -55,8 +57,6 @@ export const loginUser = createAsyncThunk(
     }
   }
 );
-
-
 
 export const logoutUser = createAsyncThunk(
   "auth/logout",
@@ -74,11 +74,10 @@ export const logoutUser = createAsyncThunk(
   }
 );
 
-interface UserState {
+interface AuthState {
   loading: boolean;
   error: string | null;
   data: UserResponseProps | null;
-  dashboard: any | null;
   authenticated: boolean;
   userData: UserData;
 }
@@ -87,12 +86,11 @@ const initialState = {
   loading: false,
   error: null,
   data: null,
-  dashboard: null,
   authenticated: !!userData,
-} as UserState;
+} as AuthState;
 
 const authSlice = createSlice({
-  name: "user",
+  name: "auth",
   initialState,
   reducers: {},
   extraReducers(builder) {
@@ -120,9 +118,7 @@ const authSlice = createSlice({
       .addCase(loginUser.rejected, (state, action: PayloadAction<any>) => {
         state.loading = false;
         state.error = action.payload;
-      })
-
-    
+      });
   },
 });
 

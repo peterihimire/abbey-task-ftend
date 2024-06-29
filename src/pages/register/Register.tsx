@@ -14,10 +14,6 @@ const Register: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const location = useLocation();
-  const from = location?.state?.from?.pathname;
-  // console.log(from);
-  // const [formError, setFormError] = useState();
-  // const [formError, setFormError] = useState<FormError>(initialFormError);
   const [logging, setLogging] = useState(false);
   const [error, setError] = useState("");
 
@@ -27,9 +23,6 @@ const Register: React.FC = () => {
       .email("Invalid email address")
       .required("Email Required"),
     password: Yup.string().required("Password Required"),
-
-    // password: Yup.string().required("Required"),
-    // confirm_password: Yup.string().required("Required"),
   });
 
   const formik = useFormik({
@@ -61,9 +54,10 @@ const Register: React.FC = () => {
           });
 
           setLogging(false);
-          setTimeout(() => {
-            navigate("/login");
-          }, 3000);
+          navigate("/login");
+          // setTimeout(() => {
+          //   navigate("/login");
+          // }, 3000);
         } else {
           toast.error(response.payload.msg, {
             position: "top-right",

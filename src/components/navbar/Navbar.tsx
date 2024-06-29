@@ -8,17 +8,21 @@ import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined
 import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
+import { LogoutOutlined } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import { useContext } from "react";
 import { DarkModeContext } from "../../context/darkModeContext";
-import { AuthContext } from "../../context/authContext";
+import { RootState } from "../../redux/store";
+import { logoutUser } from "../../redux/features/auth/authSlice";
+import { useAppSelector, useAppDispatch } from "../../hooks/useTypedSelector";
+import { useNavigate } from "react-router-dom";
 
 const Navbar: React.FC = () => {
-  // const { toggle, darkMode } = useContext(DarkModeContext);
-  // const { currentUser } = useContext(AuthContext);
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const currentUser = useAppSelector((state: RootState) => state.user);
 
   const darkModeContext = useContext(DarkModeContext);
-  const authContext = useContext(AuthContext);
 
   if (!darkModeContext) {
     throw new Error(
@@ -26,18 +30,23 @@ const Navbar: React.FC = () => {
     );
   }
 
-  if (!authContext) {
-    throw new Error("AuthContext must be used within an AuthContextProvider");
-  }
-
   const { toggle, darkMode } = darkModeContext;
-  const { currentUser } = authContext;
+
+  const handleLogout = async () => {
+    try {
+      await dispatch(logoutUser());
+      navigate("/login"); // Navigate to login page after logout
+    } catch (error) {
+      console.error("Logout error:", error);
+      // Handle error if needed
+    }
+  };
 
   return (
     <div className="navbar">
       <div className="left">
         <Link to="/" style={{ textDecoration: "none" }}>
-          <span>abbey</span>
+          <span>Logo</span>
         </Link>
         <HomeOutlinedIcon />
         {darkMode ? (
@@ -52,12 +61,20 @@ const Navbar: React.FC = () => {
         </div>
       </div>
       <div className="right">
+        <button className="logout" onClick={() => handleLogout()}>
+          logout
+          <LogoutOutlined />
+        </button>
+
         <PersonOutlinedIcon />
         <EmailOutlinedIcon />
         <NotificationsOutlinedIcon />
         <div className="user">
-          <img src={currentUser.profilePic} alt="" />
-          <span>{currentUser.name}</span>
+          <img
+            src="https://images.pexels.com/photos/4881619/pexels-photo-4881619.jpeg?auto=compress&cs=tinysrgb&w=1600"
+            alt=""
+          />
+          <span>{currentUser?.userData?.fullname}</span>
         </div>
       </div>
     </div>

@@ -1,22 +1,25 @@
 import React from "react";
-
 import "./share.scss";
 import Image from "../../assets/img.png";
 import Map from "../../assets/map.png";
 import Friend from "../../assets/friend.png";
-import { useContext } from "react";
-import { AuthContext } from "../../context/authContext";
+import { RootState } from "../../redux/store";
+import { useAppSelector } from "../../hooks/useTypedSelector";
 
 const Share: React.FC = () => {
-  const { currentUser } = useContext(AuthContext);
+  const currentUser = useAppSelector((state: RootState) => state.user);
   return (
     <div className="share">
       <div className="container">
         <div className="top">
-          <img src={currentUser.profilePic} alt="" />
+          <img
+            src="https://images.pexels.com/photos/4881619/pexels-photo-4881619.jpeg?auto=compress&cs=tinysrgb&w=1600"
+            alt=""
+          />
+
           <input
             type="text"
-            placeholder={`What's on your mind ${currentUser.name}?`}
+            placeholder={`What's on your mind ${currentUser?.userData?.fullname}?`}
           />
         </div>
         <hr />

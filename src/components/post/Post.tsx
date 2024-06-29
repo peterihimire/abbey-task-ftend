@@ -1,4 +1,3 @@
-// import React from "react";
 import "./post.scss";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
 import FavoriteOutlinedIcon from "@mui/icons-material/FavoriteOutlined";
@@ -13,7 +12,6 @@ import { PostProps } from "../../types/types";
 const Post: React.FC<PostProps> = ({ post }) => {
   const [commentOpen, setCommentOpen] = useState(false);
 
-  //TEMPORARY
   const liked = false;
 
   return (

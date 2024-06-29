@@ -1,13 +1,10 @@
-// import { useContext } from "react";
-// import { Link } from "react-router-dom";
-// import { AuthContext } from "../../context/authContext";
 import "./login.scss";
 import React, { useState, useEffect } from "react";
 import { CircularProgress } from "@mui/material";
 import { useLocation, Link, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { useAppDispatch } from "../../hooks/useTypedSelector";
+import { useAppDispatch, useAppSelector } from "../../hooks/useTypedSelector";
 import { loginUser } from "../../redux/features/auth/authSlice";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -16,10 +13,8 @@ const Login: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const location = useLocation();
-  // const from = location?.state?.from?.pathname;
-  // console.log(from);
-  // const [formError, setFormError] = useState();
-  // const [formError, setFormError] = useState<FormError>(initialFormError);
+  const authenticated = useAppSelector((state) => state.auth.authenticated);
+
   const [logging, setLogging] = useState(false);
   const [error, setError] = useState("");
 
@@ -28,9 +23,6 @@ const Login: React.FC = () => {
       .email("Invalid email address")
       .required("Email Required"),
     password: Yup.string().required("Password Required"),
-
-    // password: Yup.string().required("Required"),
-    // confirm_password: Yup.string().required("Required"),
   });
 
   const formik = useFormik({
@@ -86,15 +78,31 @@ const Login: React.FC = () => {
     },
   });
 
-  // Clears the post verified error
+  // Navigate after login success
+  useEffect(() => {
+    if (authenticated) {
+      navigate("/");
+    }
+  }, [authenticated, navigate]);
+
+  // Clears the error after some time
   useEffect(() => {
     if (error) {
       setTimeout(() => {
         setError("");
       }, 4000);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [error]);
+
+  // // Clears the post verified error
+  // useEffect(() => {
+  //   if (error) {
+  //     setTimeout(() => {
+  //       setError("");
+  //     }, 4000);
+  //   }
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [error]);
 
   return (
     <div className="login">
