@@ -1,46 +1,82 @@
-# Getting Started with Create React App
+# Abbey Fullstack Challenge Frontend
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Table of Contents
 
-## Available Scripts
+- [General Information](#general-information)
+- [Dependencies](#dependencies)
+- [Setup](#setup)
+- [Usage](#usage)
+- [Postman Documentation](#postman-documentation)
 
-In the project directory, you can run:
+---
 
-### `npm start`
+## General Information
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+The Abbey Fullstack challenge implementation by me, is in the form of adding friends and followers and others can also add you as friend and start following you. This REST API application built using the NodeJS, Express framework, PostgreSQL RDMS, Prisma ORM, Redis to to the session which is the best practice when working with sessions on the server which is based on Express and supports TypeScript. It utilizes PostgreSQL as the database management system and JWT for authentication. This API serves as the backend for a task management system. Users can register and authenticate by logging in. A cookie containing a JWT token, which expires after 24 hours, is generated upon login. Users can log out by clearing the cookie.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+---
 
-### `npm test`
+## Dependencies
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+The following dependencies are required for the application:
 
-### `npm run build`
+- `argon2`
+- `cookie-parser`
+- `express`
+- `express-session`
+- `passport`
+- `passport-jwt`
+- `passport-local`
+- `prisma`
+- `postgresql`
+- `pg`
+- `pg-hstore`
+- `prettier`
+- `@nestjs/config`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+---
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Setup
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+1. Clone this repository to your desktop:
+   ```sh
+   git clone https://github.com/peterihimire/niyo-tms-app.git
+   ```
+2. Change directory into the project folder:
+   ```sh
+   cd niyo-tms-app
+   ```
+3. Create a .env file:
+   ```sh
+   touch .env
+   ```
+4. Copy the following environment variables to your .env file and customize them as needed:
+   ```txt
+   PORT=8090
+   DATABASE_URL=postgresql://postgres:testing123@localhost:5432/task_manager?schema=public
+   JWT_SECRET=randomsecretforyou
+   ```
+5. Install the dependencies:
+   ```sh
+   npm install
+   ```
+6. Generate the Prisma client:
+   ```sh
+   npx prisma generate
+   ```
+7. Start the application:
+   ```sh
+   npm run start
+   ```
+8. To test the API endpoints, use Postman or Insomnia. Optionally, add a global environment variable for the base URL (http://127.0.0.1:8090/api/taskmgt/v1) and name it as desired (e.g., {{TMS}}).
 
-### `npm run eject`
+---
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+## Usage
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+The application is divided into two main sections: the HTTP section serving the REST API and the WebSocket (Socket.IO) section for real-time communication.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+- The REST API handles user signup, signin, user information, and task CRUD operations.
+- The WebSocket section manages real-time updates for task creation, updates, and deletion.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
 
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).

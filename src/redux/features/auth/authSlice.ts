@@ -20,7 +20,6 @@ const userData: UserData | null = userDataString
 export const registerUser = createAsyncThunk(
   "auth/register",
   async (payload: UserRegPayloadProps, thunkApi) => {
-    console.log("my reg payload: ", payload);
     try {
       const response = await userAPI.registerUser(payload);
       const data = response.data;
@@ -44,7 +43,6 @@ export const loginUser = createAsyncThunk(
       await thunkApi.dispatch(getUserInfo());
       return data;
     } catch (error: any) {
-      console.log("Error yeah: ", error.response);
       const message = error?.response?.data;
       return thunkApi.rejectWithValue(message);
     }

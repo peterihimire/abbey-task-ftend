@@ -68,7 +68,6 @@ const Login: React.FC = () => {
           setLogging(false);
         }
       } catch (err: any) {
-        console.log("Will this error log...", err);
         setLogging(false);
       } finally {
         setLogging(false);

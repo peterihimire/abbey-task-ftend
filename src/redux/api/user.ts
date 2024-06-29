@@ -1,7 +1,6 @@
 import $axios from "./config";
 import { UserPayloadProps, UserRegPayloadProps } from "../../types/types";
 
-console.log("This is axios...", $axios);
 const userAPI = {
   async registerUser(payload: UserRegPayloadProps) {
     return $axios.post("/auth/register", payload);

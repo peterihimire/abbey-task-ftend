@@ -34,7 +34,6 @@ const Register: React.FC = () => {
 
     onSubmit: async (values) => {
       setLogging(true);
-      console.log("This is the register value", values);
 
       try {
         const response = await dispatch(registerUser(values));
@@ -78,14 +77,12 @@ const Register: React.FC = () => {
     },
   });
 
-  // Clears the post verified error
   useEffect(() => {
     if (error) {
       setTimeout(() => {
         setError("");
       }, 4000);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [error]);
 
   return (

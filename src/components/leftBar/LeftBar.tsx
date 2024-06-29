@@ -22,10 +22,6 @@ import "react-toastify/dist/ReactToastify.css";
 const LeftBar: React.FC = () => {
   const currentUser = useAppSelector((state: RootState) => state.user);
 
-  console.log("Yeah, current whatttt USER", currentUser);
-  console.log("Yeah, current fullname", currentUser);
-  console.log("Yeah, current friends", currentUser);
-
   return (
     <div className="leftBar">
       <div className="container">
