@@ -52,7 +52,10 @@ const Register: React.FC = () => {
           });
 
           setLogging(false);
-          navigate("/login");
+          // navigate("/login");
+          setTimeout(() => {
+            navigate("/login");
+          }, 1000);
         } else {
           toast.error(response.payload.msg, {
             position: "top-right",
@@ -133,14 +136,13 @@ const Register: React.FC = () => {
             {formik.touched.fullname && formik.errors.fullname ? (
               <p className={`errorMsg`}>{formik.errors.fullname}</p>
             ) : null}
-            {/* <input type="text" placeholder="Name" /> */}
-            {formik.touched.password && formik.errors.password ? (
-              <p className={`errorMsg`}>{formik.errors.password}</p>
-            ) : null}
             {formik.touched.email && formik.errors.email ? (
               <p className={`errorMsg`}>{formik.errors.email}</p>
             ) : null}
-            {error ? error : ""}
+            {formik.touched.password && formik.errors.password ? (
+              <p className={`errorMsg`}>{formik.errors.password}</p>
+            ) : null}
+
             <button type="submit" disabled={logging}>
               {logging ? (
                 <CircularProgress size={20} style={{ color: "#fff" }} />

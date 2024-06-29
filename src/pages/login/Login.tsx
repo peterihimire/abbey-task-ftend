@@ -16,7 +16,6 @@ const Login: React.FC = () => {
   const authenticated = useAppSelector((state) => state.auth.authenticated);
 
   const [logging, setLogging] = useState(false);
-  const [error, setError] = useState("");
 
   const validationSchema = Yup.object({
     email: Yup.string()
@@ -39,7 +38,7 @@ const Login: React.FC = () => {
 
       try {
         const response = await dispatch(loginUser(values));
-        console.log("This is user return value", response);
+
         if (response.payload.status === "success") {
           toast.success(`${response.payload.msg}`, {
             position: "top-right",
@@ -71,7 +70,6 @@ const Login: React.FC = () => {
       } catch (err: any) {
         console.log("Will this error log...", err);
         setLogging(false);
-        setError(err.data.errors);
       } finally {
         setLogging(false);
       }
@@ -84,25 +82,6 @@ const Login: React.FC = () => {
       navigate("/");
     }
   }, [authenticated, navigate]);
-
-  // Clears the error after some time
-  useEffect(() => {
-    if (error) {
-      setTimeout(() => {
-        setError("");
-      }, 4000);
-    }
-  }, [error]);
-
-  // // Clears the post verified error
-  // useEffect(() => {
-  //   if (error) {
-  //     setTimeout(() => {
-  //       setError("");
-  //     }, 4000);
-  //   }
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [error]);
 
   return (
     <div className="login">

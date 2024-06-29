@@ -27,7 +27,7 @@ export const registerUser = createAsyncThunk(
       return data;
     } catch (error: any) {
       console.log("This is error message,lets see...", error);
-      const message = error.response.data;
+      const message = error?.response?.data;
       return thunkApi.rejectWithValue(message);
     }
   }
@@ -45,7 +45,7 @@ export const loginUser = createAsyncThunk(
       return data;
     } catch (error: any) {
       console.log("Error yeah: ", error.response);
-      const message = error?.response?.data?.message;
+      const message = error?.response?.data;
       return thunkApi.rejectWithValue(message);
     }
   }

@@ -13,12 +13,9 @@ export const getUserInfo = createAsyncThunk(
       const response = await userAPI.getUserInfo();
       const data = response.data;
 
-      console.log("THis is response.data..", data);
-
       const abbeyData = JSON.parse(
         localStorage.getItem("abbeytask_user") || "{}"
       );
-      console.log("This is abbeyData", abbeyData);
 
       const { followers, following, fullname, friends, friendOf, acctId } =
         response.data.data;
@@ -27,7 +24,6 @@ export const getUserInfo = createAsyncThunk(
         ...abbeyData,
         ...{ followers, following, fullname, friendOf, friends, acctId },
       };
-      console.log(newAbbeyData);
 
       localStorage.setItem("abbeytask_user", JSON.stringify(newAbbeyData));
 
