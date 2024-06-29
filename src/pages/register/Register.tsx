@@ -1,8 +1,7 @@
-// import { Link } from "react-router-dom";
 import "./register.scss";
 import React, { useState, useEffect } from "react";
 import { CircularProgress } from "@mui/material";
-import { useLocation, Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useAppDispatch } from "../../hooks/useTypedSelector";
@@ -13,7 +12,6 @@ import "react-toastify/dist/ReactToastify.css";
 const Register: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const location = useLocation();
   const [logging, setLogging] = useState(false);
   const [error, setError] = useState("");
 
@@ -55,9 +53,6 @@ const Register: React.FC = () => {
 
           setLogging(false);
           navigate("/login");
-          // setTimeout(() => {
-          //   navigate("/login");
-          // }, 3000);
         } else {
           toast.error(response.payload.msg, {
             position: "top-right",

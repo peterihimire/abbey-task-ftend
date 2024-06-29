@@ -1,10 +1,10 @@
-import React, { ReactNode } from "react";
-import { Navigate, Outlet } from "react-router-dom";
+import React from "react";
+import { Navigate } from "react-router-dom";
 
 interface ProtectedRoutesProps {
   isAllowed: boolean;
   redirectPath?: string;
-  children?: ReactNode;
+  children: React.ReactNode;
 }
 
 const ProtectedRoutes: React.FC<ProtectedRoutesProps> = ({
@@ -13,9 +13,10 @@ const ProtectedRoutes: React.FC<ProtectedRoutesProps> = ({
   children,
 }) => {
   if (!isAllowed) {
-    return <Navigate to={redirectPath} replace />;
+    return <Navigate to={redirectPath} />;
   }
-  return <>{children ? children : <Outlet />}</>;
+
+  return <>{children}</>;
 };
 
 export default ProtectedRoutes;

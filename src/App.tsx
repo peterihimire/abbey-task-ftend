@@ -1,10 +1,9 @@
 import "./style.scss";
 import { useContext } from "react";
-import { RouterProvider } from "react-router-dom";
+import { Provider } from "react-redux";
+import store from "./redux/store";
 import CookieConsent from "react-cookie-consent";
-import createRoutes from "./routes/routes";
-import { RootState } from "./redux/store";
-import { useAppSelector } from "./hooks/useTypedSelector";
+import AllRoutes from "./routes/Routes";
 
 import {
   DarkModeContext,
@@ -15,19 +14,16 @@ const App: React.FC = (): JSX.Element => {
   const darkModeContext = useContext<DarkModeContextProps | undefined>(
     DarkModeContext
   );
-  const currentUser = useAppSelector((state: RootState) => state.auth);
 
   if (!darkModeContext) {
     throw new Error(
       "DarkModeContext must be used within a DarkModeContextProvider"
     );
   }
-  const router = createRoutes(!!currentUser.authenticated);
-  const { darkMode } = darkModeContext;
 
   return (
-    <div className={`theme-${darkMode ? "dark" : "light"}`}>
-      <RouterProvider router={router} />
+    <Provider store={store}>
+      <AllRoutes />
       <CookieConsent
         location="bottom"
         buttonText="Accept Cookie"
@@ -38,7 +34,7 @@ const App: React.FC = (): JSX.Element => {
       >
         This website uses cookies to enhance the user experience.{" "}
       </CookieConsent>
-    </div>
+    </Provider>
   );
 };
 

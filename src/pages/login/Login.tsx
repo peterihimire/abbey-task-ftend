@@ -1,7 +1,7 @@
 import "./login.scss";
 import React, { useState, useEffect } from "react";
 import { CircularProgress } from "@mui/material";
-import { useLocation, Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useAppDispatch, useAppSelector } from "../../hooks/useTypedSelector";
@@ -12,7 +12,7 @@ import "react-toastify/dist/ReactToastify.css";
 const Login: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const location = useLocation();
+
   const authenticated = useAppSelector((state) => state.auth.authenticated);
 
   const [logging, setLogging] = useState(false);

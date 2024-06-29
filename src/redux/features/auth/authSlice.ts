@@ -1,14 +1,9 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import userAPI from "../../api/user";
-import { getUserInfo } from "../users/userSlice"; // Import getUserInfo action
+import { getUserInfo } from "../users/userSlice";
 
-import {
-  UserPayloadProps,
-  UserResponseProps,
-  UserRegPayloadProps,
-} from "../../../types/types";
+import { UserPayloadProps, UserRegPayloadProps } from "../../../types/types";
 interface UserData {
-  // Define the structure of your user data here
   fullname: string;
   acct_id: string;
   email: string;
@@ -21,8 +16,6 @@ const userDataString = localStorage.getItem("abbeytask_user");
 const userData: UserData | null = userDataString
   ? JSON.parse(userDataString)
   : null;
-
-// import Post from "../../models/postModel";
 
 export const registerUser = createAsyncThunk(
   "auth/register",
@@ -48,7 +41,7 @@ export const loginUser = createAsyncThunk(
       const response = await userAPI.loginUser(payload);
       const data = response.data;
       localStorage.setItem("abbeytask_user", JSON.stringify(data.data));
-      await thunkApi.dispatch(getUserInfo()); // Dispatch getUserInfo here
+      await thunkApi.dispatch(getUserInfo());
       return data;
     } catch (error: any) {
       console.log("Error yeah: ", error.response);
@@ -77,7 +70,6 @@ export const logoutUser = createAsyncThunk(
 interface AuthState {
   loading: boolean;
   error: string | null;
-  data: UserResponseProps | null;
   authenticated: boolean;
   userData: UserData;
 }
@@ -85,7 +77,6 @@ interface AuthState {
 const initialState = {
   loading: false,
   error: null,
-  data: null,
   authenticated: !!userData,
 } as AuthState;
 
@@ -100,7 +91,6 @@ const authSlice = createSlice({
       })
       .addCase(registerUser.fulfilled, (state, action) => {
         state.loading = false;
-        state.data = action.payload;
       })
       .addCase(registerUser.rejected, (state, action: PayloadAction<any>) => {
         state.loading = false;
@@ -112,10 +102,21 @@ const authSlice = createSlice({
       })
       .addCase(loginUser.fulfilled, (state, action) => {
         state.loading = false;
-        state.data = action.payload;
         state.authenticated = true;
       })
       .addCase(loginUser.rejected, (state, action: PayloadAction<any>) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+
+      .addCase(logoutUser.pending, (state, action) => {
+        state.loading = true;
+      })
+      .addCase(logoutUser.fulfilled, (state) => {
+        state.loading = false;
+        state.authenticated = false;
+      })
+      .addCase(logoutUser.rejected, (state, action: PayloadAction<any>) => {
         state.loading = false;
         state.error = action.payload;
       });
